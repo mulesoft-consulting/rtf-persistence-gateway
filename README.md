@@ -92,3 +92,7 @@ Alternative Production deployment options
 - Production grade [PostgreSQL Operator](https://github.com/zalando/postgres-operator) to create and manage PostgreSQL clusters (as StatefulSet vs Deployment)
 
 > NOTE: It is intended for testing purpose ONLY. Local (to k8s cluster) has its Pros and Cons.
+
+## Reference
+
+Runtime Fabric Docs - [Persistence Gateway (Persistent Object Store)](git@bitbucket.org:terrywang/rtf-persistence-gateway.git)
