@@ -95,4 +95,4 @@ Alternative Production deployment options
 
 ## Reference
 
-Runtime Fabric Docs - [Persistence Gateway (Persistent Object Store)](git@bitbucket.org:terrywang/rtf-persistence-gateway.git)
+Runtime Fabric Docs - [Persistence Gateway (Persistent Object Store)](https://docs.mulesoft.com/runtime-fabric/latest/persistence-gateway)
