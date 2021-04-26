@@ -1,0 +1,5 @@
+DB Connection String
+postgres://mulesoft:mulesoft@postgres.default.svc.cluster.local:5432/store
+
+base64 encoded - base64 -w0
+cG9zdGdyZXM6Ly9tdWxlc29mdDptdWxlc29mdEBwb3N0Z3Jlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsOjU0MzIvc3RvcmUK
