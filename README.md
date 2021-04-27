@@ -77,10 +77,11 @@ Expect to see HTTP response code 200 which indicating passing the health check
 
 > NOTE: Mule Applications deployed to RTF clusters needs to have the `Use Persistent Object Storage` selected. Deployment via REST API requires the option `"persistentObjectStore": true` in the HTTP POST data JSON body.
 
-
 ## Considerations
 
-Not for production.
+For testing ONLY, not for production.
+
+`hostPath` is used to persist PostgreSQL data, `HostPath` volume is for single node testing only, will NOT work in a multi-node cluster, consider using `local` volume instead.
 
 > NOTE: by default the k8s secret is using the following DB connection string: `postgres://mulesoft:mulesoft@postgres.default.svc.cluster.local:5432/store`, make adjustment if necessary.
 
