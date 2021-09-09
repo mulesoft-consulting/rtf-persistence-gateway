@@ -80,6 +80,71 @@ Expect to see HTTP response code 200 which indicating passing the health check
 
 > NOTE: Mule Applications deployed to RTF clusters needs to have the `Use Persistent Object Storage` selected. Deployment via REST API requires the option `"persistentObjectStore": true` in the HTTP POST data JSON body.
 
+## Troubleshooting
+
+In the unlikely event that exploring PostgreSQL is required, use the workflow:
+- attach into postgresql pod: `kubectl exec -ti postgres-<rs-id>-<pod-id> -- /bin/bash`
+- connect to postgresql via `psql` CLI: `psql -h localhost -p 5432 -d store -U mulesoft`
+- check if relevant databases / tables exist
+- check rows in the table
+- etc.
+
+> NOTE: `-d dbname` and `-U username` are defined in the CRD's secret as `persistence-gateway-creds` (`base64` encoded). 
+
+Exmaple output
+```bash
+controller-1:/$ kubectl exec -ti postgres-dcdcc6546-cpffd -- /bin/bash
+root@postgres-dcdcc6546-cpffd:/# psql -h localhost -p 5432 -d store -U mulesoft
+psql (13.4 (Debian 13.4-1.pgdg100+1))
+Type "help" for help.
+
+store=# \l
+                                 List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges   
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | mulesoft | UTF8     | en_US.utf8 | en_US.utf8 | 
+ store     | mulesoft | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | mulesoft | UTF8     | en_US.utf8 | en_US.utf8 | =c/mulesoft          +
+           |          |          |            |            | mulesoft=CTc/mulesoft
+ template1 | mulesoft | UTF8     | en_US.utf8 | en_US.utf8 | =c/mulesoft          +
+           |          |          |            |            | mulesoft=CTc/mulesoft
+(4 rows)
+
+store=# \d
+              List of relations
+ Schema |     Name      |   Type   |  Owner   
+--------+---------------+----------+----------
+ public | items         | table    | mulesoft
+ public | items_id_seq  | sequence | mulesoft
+ public | stores        | table    | mulesoft
+ public | stores_id_seq | sequence | mulesoft
+(4 rows)
+
+store=# \d stores;
+                                          Table "public.stores"
+       Column        |          Type          | Collation | Nullable |              Default               
+---------------------+------------------------+-----------+----------+------------------------------------
+ id                  | integer                |           | not null | nextval('stores_id_seq'::regclass)
+ name                | character varying(255) |           | not null | 
+ org_id              | character varying(255) |           | not null | 
+ env_id              | character varying(255) |           | not null | 
+ default_ttl_seconds | integer                |           | not null | 
+ is_fixed_ttl        | boolean                |           | not null | 
+Indexes:
+    "stores_pkey" PRIMARY KEY, btree (id)
+    "uk_stores" UNIQUE CONSTRAINT, btree (name, org_id, env_id)
+Referenced by:
+    TABLE "items" CONSTRAINT "items_store_id_fkey" FOREIGN KEY (store_id) REFERENCES stores(id)
+
+store=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of 
+-----------+------------------------------------------------------------+-----------
+ mulesoft  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+store=# 
+```
+
 ## Considerations
 
 For testing ONLY, not for production.
