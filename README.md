@@ -33,7 +33,7 @@ kubectl apply -f k8s-manifests/
 
 ```bash
 # Persistence Gateway Secret and CRD
-kubectl apply -f rtf-persistence-gateway/
+kubectl apply -f persistence-gateway-crd/
 ```
 
 ### Verify
