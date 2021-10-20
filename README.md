@@ -136,6 +136,28 @@ Indexes:
 Referenced by:
     TABLE "items" CONSTRAINT "items_store_id_fkey" FOREIGN KEY (store_id) REFERENCES stores(id)
 
+store=# \d items;
+                                         Table "public.items"
+    Column    |            Type             | Collation | Nullable |              Default              
+--------------+-----------------------------+-----------+----------+-----------------------------------
+ id           | integer                     |           | not null | nextval('items_id_seq'::regclass)
+ store_id     | integer                     |           | not null | 
+ key          | character varying(255)      |           | not null | 
+ partition    | character varying(255)      |           | not null | 
+ value_type   | character varying(10)       |           | not null | 
+ number_value | integer                     |           |          | 
+ string_value | text                        |           |          | 
+ binary_value | bytea                       |           |          | 
+ last_updated | timestamp without time zone |           |          | 
+ is_fixed_ttl | boolean                     |           | not null | 
+ ttl          | timestamp without time zone |           | not null | 
+Indexes:
+    "items_pkey" PRIMARY KEY, btree (id)
+    "idx_items_ttl" btree (ttl)
+    "uk_items" UNIQUE CONSTRAINT, btree (key, store_id, partition)
+Foreign-key constraints:
+    "items_store_id_fkey" FOREIGN KEY (store_id) REFERENCES stores(id)
+
 store=# \du
                                    List of roles
  Role name |                         Attributes                         | Member of 
