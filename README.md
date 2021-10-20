@@ -2,14 +2,14 @@
 
 `TL;DR`
 - Quickly deploy PostgreSQL to back RTF Persistent Object Store at the `best cost`
-- Works for both RTF appliance and BYO k8s (AKA BYOK)
+- Caters for both RTF appliance and BYO k8s (AKA BYOK)
 - For testing purpose ONLY, production use cases require thorough considerations
 
-`k8s` manifests to create `pv`, `pvc`, `cm`, `deployment` and `svc` to support a single instance PostgreSQL database workload to back RTF Persistence Gateway (Persistent Object Store).
+This repo consists of `k8s` manifests to create `pv`, `pvc`, `cm`, `deployment` `svc` and `crd` to support a single instance PostgreSQL database workload to back RTF Persistence Gateway (Persistent Object Store).
 
 ## Create k8s Deployment, Secret and CRD
 
-We'll be creating a simple PostgreSQL deployment in the same k8s cluster (bad idea for production but the best option at the best cost for testing) to back Persistent Object Store.
+We'll be creating a simple PostgreSQL deployment in the same k8s cluster where RTF is running (bad idea for production but the best option at the best cost for testing) to back Persistent Object Store.
 
 Choose the right manifests for target k8s distributions
 - RTF appliance: k8s v1.13.x (due to upstream gravity 5.5.x)
@@ -91,7 +91,7 @@ In the unlikely event that exploring PostgreSQL is required, use the workflow:
 
 > NOTE: `-d dbname` and `-U username` are defined in the CRD's secret as `persistence-gateway-creds` (`base64` encoded). 
 
-Exmaple output
+Example output
 ```bash
 controller-1:/$ kubectl exec -ti postgres-dcdcc6546-cpffd -- /bin/bash
 root@postgres-dcdcc6546-cpffd:/# psql -h localhost -p 5432 -d store -U mulesoft
